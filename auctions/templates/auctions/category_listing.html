@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="jumbotron jumbotron-fluid">
+     <div class="container">
+    <h1 class="display-4">Categories</h1>
+    <p class="lead">Select category to browse through listings</p>
+  </div>
+    </div>
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action active">
+            Select any one of the following
+        </a>
+        {% for cat in categories %}
+        <a href="category/{{cat}}" class="list-group-item list-group-item-action">{{cat}}</a>
+        {% endfor %}
+      </div>
+
+{% endblock %}

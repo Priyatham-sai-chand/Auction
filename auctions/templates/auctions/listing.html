@@ -1,0 +1,97 @@
+
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing : {{ Listing.title}}</h2>
+
+    <div class="text-right">
+    {% if user.username|stringformat:"s" == Listing.user|stringformat:"s" and not Listing.closed %}
+        
+        <a class="btn btn-danger" href="{% url 'close_bid' Listing.title %}" role="button" style="display:inline;">Close this Listing</a>
+    {% endif %}
+        <form action="{% url 'watch' Listing.title %}" method="POST" style="display:inline;" >
+            {% csrf_token %}
+            {% if user not in Listing.watchlists.all %}
+                <button type="submit" name="watch", value="{{user}}", class="btn btn-primary" >Watch</button>
+            {% else %}
+                <button type="submit" name="watch", value="{{user}}", class="btn btn-secondary">Unwatch</button>
+            {% endif %}
+            <input type="hidden" name="previous" value="{{ request.path }}">
+            </form>
+    </div>
+    
+    <img src = "{{Listing.picture}}" width = "50%" height= "50%"></img>
+    <hr>
+
+    <p style="font-size: large;">{{Listing.desc}}</p>
+    
+    {% if Listing.closed %}
+        <br>
+        <h3 style="background-color:orangered;color:white;"><center>This listing is CLOSED</center></h3>
+        <br>
+        <h4>This Listing is won by <strong style="color:maroon;">@{{bids.user}}</strong> for <strong style="color:green;">${{bids.bid_value}}</strong></h4>
+    {% else %}
+    <h3 style="color:darkgreen;">${{bids.bid_value}}  <small style = "color:black;">by</small> <small style="color:navy;">@{{bids.user}}</small></h3>
+    
+    <br>
+        {% if user.is_authenticated and user != Listing.user %}
+     <form action="{% url 'bid' Listing.title  %}" method = "POST">
+            {% csrf_token %}
+               {{ bid_form }} 
+            
+            <br/>
+            <input class="btn btn-primary" type="submit" value="Place Bid">
+    </form>
+    {% elif user.is_authenticated and user == Listing.user%}
+        <h5>You can't bid on your own Listing</h5>
+    {% else %}
+        <br>
+        <strong>Log In to bid on this Listing</strong>
+    {% endif %}
+    {% endif %}
+    <br>
+    <hr>
+    <h4>Comments ...</h4>
+
+    {% if not Listing.comments.all %}
+    No comments Yet....
+    <br>
+    <br>
+    <br>
+
+    {% else %}
+        {% for comment in Listing.comments.all %}
+            <strong style="color:maroon;">{{comment.user}} - {{comment.date_added}}</strong>
+            <br/>
+            {{ comment.body }}
+            <br/>
+            <hr>
+        {% endfor %}
+    
+
+    {% endif %}
+        {% if not Listing.closed%}
+        <h5>Add comment</h5>
+        <p>
+        <form action="{% url 'listing' Listing.title %}" method="POST">
+            {% csrf_token %}
+            <textarea class = "form-control" name="comment_body" rows="4" cols="50" placeholder="Comment here!"></textarea>
+            <br>
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+        </p>
+        {% elif not user.is_authenticated %}
+        <br/>
+        <hr>
+            Log In to comment on this listing 
+
+        {% else %}
+            <br/>
+            <hr>
+             The Listing is <strong style="color:red;">CLOSED</strong> for comments
+        {% endif %}
+
+        
+
+
+{% endblock %}

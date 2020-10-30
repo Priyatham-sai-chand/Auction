@@ -1,0 +1,88 @@
+{% extends "auctions/layout.html"%}
+
+{% block body %}
+    <h2>Listings under category "{{ cat_name }}"</h2>
+    {% if listings %}
+    <div class="row">
+        
+        {% for list in listings %}
+        <div class="col md-3 mb-4">
+            <a href="listing/{{list.title}}" style = "color:inherit;text-decoration: none;">
+            <div class="card border-light" style="width: 18rem;">
+            <div class="shadow p-2 mb-2 bg-white rounded">
+                <img class="card-img-top" src="{{ list.picture }}" alt="Preview not found">
+                
+                <hr>
+                <div class="card-body">
+                    <h4>{{ list.title }}</h4><br>
+                    {% if not list.closed %}
+                <p class="card-text" style="font-size: medium;">
+                    {% for bidding in list.bidding_listing.all %}
+                    <b>bid price</b> : ${{bidding.bid_value}}<br>
+                    <b>Last bid by</b>: {{bidding.user}}
+                    <br>
+                    <b>created by</b>: {{list.user}}<br>
+                    {% endfor %}
+                    
+                    <small class="text-muted"><i> created on {{list.date_added}}</i> </small>                 
+                  </p>
+                  {% else %}
+                  <p class="card-text" style="font-size: medium;">
+                    <strong style="color:red;">CLOSED</strong>
+                        <br>
+                        This listing is over.
+                        <br>
+                        <br>
+                        {% for bidding in list.bidding_listing.all %}
+                        {% if user == bidding.user %}
+                        <b>You won this listing!!!</b>
+                        {% else %}
+                        <b>This is won by <strong style="color:navy;font-size: large;">@{{ bidding.user }}</strong></b> 
+                        for <strong>${{bidding.bid_value}}</strong>
+                        {% endif %}
+                        {% endfor %}
+
+                </p>
+                {% endif %}
+                <div class = "text-right">
+                    {% if list.closed %}
+                        
+
+                    {% elif user.is_authenticated %}
+                    
+                         <form action="{% url 'watch' list.title %}" method="POST">
+                         {% csrf_token %}
+                        {% if user not in list.watchlists.all %}
+                         <button type="submit" name="watch", value="{{user}}", class="btn btn-primary btn-sm">Watch</button>
+                         {% else %}
+                         <button type="submit" name="watch", value="{{user}}", class="btn btn-secondary btn-sm">Unwatch</button>
+                         {% endif %}
+                         
+                            <input type="hidden" name="previous" value="{{ request.path }}">
+                         </form>
+                    {% else %}
+                        <small>log in to watch this listing</small>
+
+                    {% endif %}
+
+
+                </div>
+                    
+                </div>
+            </div>
+        </div>
+            </a>
+        </div>
+
+        {% endfor %}
+    </div>
+
+        {% else %}
+        <br/>
+        <br/>
+        <br/>
+        <center>
+        <h3> Seems to be no listings in this category</h3>
+        </center>
+        {% endif %}
+{% endblock %}
