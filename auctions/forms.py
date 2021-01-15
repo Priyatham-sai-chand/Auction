@@ -25,11 +25,11 @@ class BidForm(forms.Form):
     bid = forms.DecimalField(decimal_places=2)
 
 class CreateForm(forms.Form):
-    title = forms.CharField( max_length=100, widget=forms.TextInput(attrs={'placeholder': 'title'}))
-    desc= forms.CharField(max_length=100,widget=forms.TextInput(attrs={'placeholder': 'description'}))
-    starting_bid= forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Starting bid'}))
-    category = forms.ChoiceField(choices=categories)
-    photo = forms.ImageField()
+    title = forms.CharField( max_length=100, widget=forms.TextInput(attrs={'placeholder': 'title'}),required=True)
+    desc= forms.CharField(max_length=100,widget=forms.TextInput(attrs={'placeholder': 'description'}),required=True)
+    starting_bid= forms.DecimalField(decimal_places=2,widget=forms.TextInput(attrs={'placeholder': 'Starting bid'}), required=True)
+    category = forms.ChoiceField(choices=categories,required=True)
+    photo = forms.ImageField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(CreateForm, self).__init__(*args, **kwargs)

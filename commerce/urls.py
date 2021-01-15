@@ -25,3 +25,18 @@ urlpatterns = [
 
 if settings.DEBUG: # new
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+           
+    #    
+    #    # alternate photo to display
+    #    if photo_url == "":
+    #        photo_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/No_image_available_600_x_450.svg/1280px-No_image_available_600_x_450.svg.png"
+    #    category_value = request.POST["category"]
+    #    listing_obj = AuctionListing(title = title, desc = desc, user = request.user,price = starting_bid, picture = photo_url,category=category_value)
+    #    listing_obj.save()
+    #    bid_obj = Bids(bid_value = starting_bid, listing = listing_obj, user = request.user)
+    #    bid_obj.save()
+    #    return render(request,"auctions/index.html",{
+    #        "Listings" : AuctionListing.objects.all()
+    #    })

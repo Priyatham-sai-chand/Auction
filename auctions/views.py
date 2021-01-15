@@ -7,9 +7,7 @@ from django import forms
 from .models import User,AuctionListing,Comment,Bids
 from .forms import BidForm,CreateForm
 
-
-
-
+categories=["Fashion","Electronics","Home","Sports","Toys","Automobile","Books","Videogames","Others"]
 
 def watch(request,title):
     """
@@ -165,7 +163,10 @@ def create(request):
     if request.method == 'POST':
         form = CreateForm(request.POST, request.FILES)
         if form.is_valid():
-            listing_obj = AuctionListing(title = form.cleaned_data["title"], desc =form.cleaned_data["desc"], user = request.user,price = form.cleaned_data["starting_bid"], picture = form.cleaned_data["photo"],category= form.cleaned_data["category"])
+            if not form.cleaned_data["photo"]:
+                listing_obj = AuctionListing(title = form.cleaned_data["title"], desc =form.cleaned_data["desc"], user = request.user,price = form.cleaned_data["starting_bid"],category= form.cleaned_data["category"])
+            else:
+                listing_obj = AuctionListing(title = form.cleaned_data["title"], desc =form.cleaned_data["desc"], user = request.user,price = form.cleaned_data["starting_bid"], picture = form.cleaned_data["photo"],category= form.cleaned_data["category"])
             listing_obj.save()
             bid_obj = Bids(bid_value = form.cleaned_data["starting_bid"], listing = listing_obj, user = request.user)
             bid_obj.save()
