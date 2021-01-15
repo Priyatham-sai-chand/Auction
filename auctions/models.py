@@ -20,7 +20,7 @@ class AuctionListing(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     price = models.DecimalField(max_digits = 10,decimal_places = 2)
     desc = models.CharField(max_length = 1000)
-    picture = models.URLField(default="https://www.riobeauty.co.uk/images/product_image_not_found.gif")
+    picture = models.ImageField();
     category = models.CharField(max_length = 64,choices=category_choices)
     date_added = models.DateTimeField(auto_now_add=True)
     closed = models.BooleanField(default=False)

@@ -5,19 +5,11 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 from .models import User,AuctionListing,Comment,Bids
+from .forms import BidForm,CreateForm
 
 
-categories = ['Fashion','Electronics','Home','Sports','Toys','Automobile','Books','Videogames', 'Other']
 
-class BidForm(forms.Form):
-    bid_value = 0.00
 
-    def __init__(self, bid_value,*args,**kwargs ):
-        super().__init__(*args,**kwargs)
-        self.bid_value = bid_value + 1
-        self.fields['bid'].widget.attrs['min'] = self.bid_value 
- 
-    bid = forms.DecimalField(decimal_places=2)
 
 def watch(request,title):
     """
@@ -170,27 +162,21 @@ def create(request):
     """
     Used to create a Listing
     """
-    if request.method == "POST":
-        title = request.POST["title"] 
-        desc = request.POST["desc"] 
-        starting_bid = request.POST["starting_bid"]
-        photo_url = request.POST["photo"]
-        
-        # alternate photo to display
-        if photo_url == "":
-            photo_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/No_image_available_600_x_450.svg/1280px-No_image_available_600_x_450.svg.png"
-        category_value = request.POST["category"]
-        listing_obj = AuctionListing(title = title, desc = desc, user = request.user,price = starting_bid, picture = photo_url,category=category_value)
-        listing_obj.save()
-        bid_obj = Bids(bid_value = starting_bid, listing = listing_obj, user = request.user)
-        bid_obj.save()
+    if request.method == 'POST':
+        form = CreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            listing_obj = AuctionListing(title = form.cleaned_data["title"], desc =form.cleaned_data["desc"], user = request.user,price = form.cleaned_data["starting_bid"], picture = form.cleaned_data["photo"],category= form.cleaned_data["category"])
+            listing_obj.save()
+            bid_obj = Bids(bid_value = form.cleaned_data["starting_bid"], listing = listing_obj, user = request.user)
+            bid_obj.save()
         return render(request,"auctions/index.html",{
             "Listings" : AuctionListing.objects.all()
         })
-    else:    
+
+    else:   
         return render(request,"auctions/create_listing.html",{
-            "categories":categories
-        })
+                "Form": CreateForm()
+            })
 def bid(request, title):
     """
     Used to bid on a listing
