@@ -5,9 +5,9 @@
     <head>
         <a href="index.html"><title>{% block title %}Auctions{% endblock %}</title></a>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+
     </head>
-    <body>
+    <body style="padding: 10px">
         <a href="{% url 'index' %}" style = "color:inherit;text-decoration: none;"><h1>Auctions</h1></a>
         <div class = "text-right" style = "align-self: flex-end;">
             {% if user.is_authenticated %}

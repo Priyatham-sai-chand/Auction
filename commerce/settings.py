@@ -129,4 +129,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'auctions/static'),
 ]
 
-
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+STATIC_LOCATION = "static"
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+AZURE_ACCOUNT_NAME = 'auctionimages'
+AZURE_ACCOUNT_KEY = '3W/fel22r8ExgQMDr8KOxxklp80/slPtAznb+G1Hkq0DWuX2bOIXnQMpgmU/BIJdIWnbDsgMr2SbC5l9qfJJ6g=='
+AZURE_CONTAINER = 'media'
