@@ -44,6 +44,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+        # Simplified static file serving.
+    # https://warehouse.python.org/project/whitenoise/
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -131,8 +134,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'auctions/static'),
 ]
 
-STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-STATIC_LOCATION = "static"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage''
+
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 AZURE_ACCOUNT_NAME = 'auctionimages'
 AZURE_ACCOUNT_KEY = '3W/fel22r8ExgQMDr8KOxxklp80/slPtAznb+G1Hkq0DWuX2bOIXnQMpgmU/BIJdIWnbDsgMr2SbC5l9qfJJ6g=='
