@@ -1,5 +1,7 @@
 # Auction
 
+[auctions-system.herokuapp.com](https://auctions-system.herokuapp.com/)
+
 ![auction](readme_image.JPG)
 
 ![GitHub language count](https://img.shields.io/github/languages/count/Priyatham-sai-chand/Auction?style=for-the-badge)
@@ -8,11 +10,11 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Priyatham-sai-chand/Auction?style=for-the-badge)
 
 
+
+
 It's a Django web application to create a auctioning system for the Harvard CS50's Web Programming with python and javascript.
 
 
 ## To run 
 ```python manage.py runserver```
-## Admin page
-username: priya
-passoword: 1234
+
