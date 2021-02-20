@@ -1,5 +1,6 @@
 # Auction
 
+Check it out here:
 [auctions-system.herokuapp.com](https://auctions-system.herokuapp.com/)
 
 ![auction](readme_image.JPG)
